@@ -14,9 +14,7 @@ namespace DV_Simulator {
             
             Network network = new Network(ParseTopology(edges));
 
-            for (int i = 0; i < network.routes.Count; i++) {
-                Debug.Log( "Edge " + i + ":\n" + network.routes[i]);
-            }
+            
             
         }
 
