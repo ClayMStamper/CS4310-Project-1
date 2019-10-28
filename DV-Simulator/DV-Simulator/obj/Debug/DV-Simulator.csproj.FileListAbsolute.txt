@@ -1,0 +1,5 @@
+C:\Users\clays\RiderProjects\CS4310-Project-1\DV-Simulator\DV-Simulator\bin\Debug\DV_Simulator.exe
+C:\Users\clays\RiderProjects\CS4310-Project-1\DV-Simulator\DV-Simulator\bin\Debug\DV_Simulator.pdb
+C:\Users\clays\RiderProjects\CS4310-Project-1\DV-Simulator\DV-Simulator\obj\Debug\DV-Simulator.csprojAssemblyReference.cache
+C:\Users\clays\RiderProjects\CS4310-Project-1\DV-Simulator\DV-Simulator\obj\Debug\DV_Simulator.exe
+C:\Users\clays\RiderProjects\CS4310-Project-1\DV-Simulator\DV-Simulator\obj\Debug\DV_Simulator.pdb
