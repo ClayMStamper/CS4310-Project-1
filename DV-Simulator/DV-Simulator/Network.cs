@@ -21,14 +21,14 @@ namespace DV_Simulator {
             SetAllLinks();
             UpdateRoutes();
 
-            foreach (Node node in nodes) {
-               // node.Flood();
-            }
-            
-            foreach (Node node in nodes) {
+            foreach (Node node in nodes)
                node.SetupDistanceVector();
-               Debug.Log(node.dv.ToString());
-            }
+            foreach (Node node in nodes) 
+                Debug.Log(node.dv.ToString());
+            foreach (Node node in nodes) 
+                node.Flood();
+            foreach (Node node in nodes) 
+                Debug.Log(node.dv.ToString());
             
         }
 
@@ -106,6 +106,7 @@ namespace DV_Simulator {
                 if (node.id == id)
                     return node;
             }
+            Debug.Log("=========\nError: Could not find node with ID:\n " + id);
             return null;
         }
 

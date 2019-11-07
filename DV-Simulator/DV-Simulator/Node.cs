@@ -51,9 +51,6 @@ namespace DV_Simulator {
             Network network = Network.singleton;
 
             foreach (int link in links) {
-                Debug.Log("Node: " + id + " has a link to the following node");
-                Debug.Log(network.GetNode(link).ToString());
-               // Debug.Log();
                 dv.Update(network.GetNode(link).dv);
             }
         }
