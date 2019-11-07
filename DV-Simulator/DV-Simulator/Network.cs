@@ -1,22 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Diagnostics;
+using System.Security.Permissions;
 
 namespace DV_Simulator {
     public class Network {
-        
+
+        public static Network singleton;
         public List<Edge> routes { get; private set; }
         public List<Node> nodes { get; private set; }
 
+        
         public Network(List<Edge> routes) {
             
             this.routes = routes;
             
+            singleton = this;
             nodes = InitializeNodes();
             SetAllLinks();
             UpdateRoutes();
             
             Debug.Log( ToString());
+            
+            foreach (Node node in nodes) {
+               node.SetupDistanceVector();
+               node.PrintDistanceVector();
+            }
             
         }
 
@@ -103,7 +113,17 @@ namespace DV_Simulator {
                 route.b = GetNode(route.b.id);
             }
         }
+
+        public int GetCost(int x, int y) {
+
+            foreach (Edge route in routes) {
+                if (x == route.a.id && y == route.b.id) {
+                    return route.cost;
+                }
+            }
+            Debug.Log("\n\nError: route from " + x + " to " + y + " was not found!!!\n\n");
+            return 99999;
+        }
         
     }
-    
 }

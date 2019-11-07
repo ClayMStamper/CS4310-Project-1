@@ -4,7 +4,12 @@ namespace DV_Simulator {
     public class DVPacket {
         
         public Node source;
-        public List<Edge> nodeCostPairs = new List<Edge>();
+        public int[,] distanceVector;
+
+        public DVPacket(Node source, int[,] distanceVector) {
+            this.source = source;
+            this.distanceVector = distanceVector;
+        }
 
     }
 }
