@@ -11,7 +11,7 @@ namespace DV_Simulator {
         public List<Edge> routes { get; private set; }
         public List<Node> nodes { get; private set; }
 
-        
+        //initialize nodes, initialize links, initialize routes, flood routing tables
         public Network(List<Edge> routes) {
             
             this.routes = routes;
@@ -20,12 +20,14 @@ namespace DV_Simulator {
             nodes = InitializeNodes();
             SetAllLinks();
             UpdateRoutes();
-            
-            Debug.Log( ToString());
+
+            foreach (Node node in nodes) {
+               // node.Flood();
+            }
             
             foreach (Node node in nodes) {
                node.SetupDistanceVector();
-               node.PrintDistanceVector();
+               Debug.Log(node.dv.ToString());
             }
             
         }

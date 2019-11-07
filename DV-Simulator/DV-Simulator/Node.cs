@@ -7,7 +7,7 @@ namespace DV_Simulator {
         public int id { get; set; }
         public List<int> links = new List<int>();
 
-        public DistanceVector dv;
+        public DistanceVector dv { get; private set; }
         public Node(int id) {
             this.id = id;
         }
@@ -46,44 +46,15 @@ namespace DV_Simulator {
             
         }
 
-        public void PrintDistanceVector() {
-            
-            int nodeCount = Network.singleton.nodes.Count;
-            Network network = Network.singleton;
-            string d = "\t"; //delimiter
-
-            string dvString = "Node: " + id + "\n";
-            
-            for (int x = -1; x < nodeCount; x++) {
-
-                if (x >= 0)
-                    dvString += x + d; //label Y-axis
-                else
-                    dvString += d;
-                
-                for (int y = 0; y < nodeCount; y++) {
-                    if (x < 0)
-                        dvString += y + d; // label X-axis
-                    else if (dv.table[x, y] != 0)
-                        dvString += dv.table[x, y] + d;
-                    else
-                        dvString += "-" + d;
-                    
-                }
-
-                dvString += "\n";
-            }
-            Debug.Log(dvString);
-        }
-        
         public void Flood() {
 
-            int nodeCount = Network.singleton.nodes.Count;
-            List<Edge> routes = Network.singleton.routes;
             Network network = Network.singleton;
 
             foreach (int link in links) {
-                dv.table[id, link] = network.GetCost(id, link);
+                Debug.Log("Node: " + id + " has a link to the following node");
+                Debug.Log(network.GetNode(link).ToString());
+               // Debug.Log();
+                dv.Update(network.GetNode(link).dv);
             }
         }
         

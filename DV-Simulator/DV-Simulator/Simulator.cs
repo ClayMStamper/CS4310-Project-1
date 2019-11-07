@@ -10,6 +10,7 @@ namespace DV_Simulator {
         private StreamWriter writer;
         private string outputPath = "output.txt";
         
+        //setup io, read file in, construct network
         public void Run(string inputPath) {
 
             singleton = this;
