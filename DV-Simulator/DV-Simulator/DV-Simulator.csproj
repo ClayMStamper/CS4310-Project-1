@@ -39,7 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Debug.cs" />
-    <Compile Include="DVPacket.cs" />
+    <Compile Include="DistanceVector.cs" />
     <Compile Include="Edge.cs" />
     <Compile Include="Network.cs" />
     <Compile Include="Program.cs" />

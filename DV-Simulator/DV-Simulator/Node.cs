@@ -7,7 +7,7 @@ namespace DV_Simulator {
         public int id { get; set; }
         public List<int> links = new List<int>();
 
-        public int[,] distanceVector;
+        public DistanceVector dv;
         public Node(int id) {
             this.id = id;
         }
@@ -38,10 +38,10 @@ namespace DV_Simulator {
             
             Network network = Network.singleton;
             int dvWidth = network.nodes.Count;
-            distanceVector =  new int[dvWidth, dvWidth];
+            dv =  new DistanceVector(this, new int[dvWidth, dvWidth]);
 
             foreach (int link in links) {
-                distanceVector[link, link] = network.GetCost(id, link);
+                dv.table[link, link] = network.GetCost(id, link);
             }
             
         }
@@ -64,8 +64,8 @@ namespace DV_Simulator {
                 for (int y = 0; y < nodeCount; y++) {
                     if (x < 0)
                         dvString += y + d; // label X-axis
-                    else if (distanceVector[x, y] != 0)
-                        dvString += distanceVector[x, y] + d;
+                    else if (dv.table[x, y] != 0)
+                        dvString += dv.table[x, y] + d;
                     else
                         dvString += "-" + d;
                     
@@ -83,7 +83,7 @@ namespace DV_Simulator {
             Network network = Network.singleton;
 
             foreach (int link in links) {
-                distanceVector[id, link] = network.GetCost(id, link);
+                dv.table[id, link] = network.GetCost(id, link);
             }
         }
         

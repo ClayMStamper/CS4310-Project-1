@@ -7,8 +7,8 @@
       <e p="DV-Simulator" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="Debug.cs" t="Include" />
+        <e p="DistanceVector.cs" t="Include" />
         <e p="DV-Simulator.csproj" t="IncludeRecursive" />
-        <e p="DVPacket.cs" t="Include" />
         <e p="Edge.cs" t="Include" />
         <e p="Network.cs" t="Include" />
         <e p="Node.cs" t="Include" />
