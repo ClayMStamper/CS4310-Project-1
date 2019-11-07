@@ -33,6 +33,48 @@ namespace DV_Simulator {
             if (!HasLink(link.id))
                 links.Add(link.id);
         }
+
+        public void SetupDistanceVector() {
+            
+            Network network = Network.singleton;
+            int dvWidth = network.nodes.Count;
+            distanceVector =  new int[dvWidth, dvWidth];
+
+            foreach (int link in links) {
+                distanceVector[link, link] = network.GetCost(id, link);
+            }
+            
+        }
+
+        public void PrintDistanceVector() {
+            
+            int nodeCount = Network.singleton.nodes.Count;
+            Network network = Network.singleton;
+            string d = "\t"; //delimiter
+
+            string dvString = "Node: " + id + "\n";
+            
+            for (int x = -1; x < nodeCount; x++) {
+
+                if (x >= 0)
+                    dvString += x + d; //label Y-axis
+                else
+                    dvString += d;
+                
+                for (int y = 0; y < nodeCount; y++) {
+                    if (x < 0)
+                        dvString += y + d; // label X-axis
+                    else if (distanceVector[x, y] != 0)
+                        dvString += distanceVector[x, y] + d;
+                    else
+                        dvString += "-" + d;
+                    
+                }
+
+                dvString += "\n";
+            }
+            Debug.Log(dvString);
+        }
         
         public void Flood() {
 
@@ -43,43 +85,6 @@ namespace DV_Simulator {
             foreach (int link in links) {
                 distanceVector[id, link] = network.GetCost(id, link);
             }
-        }
-
-        public void SetupDistanceVector() {
-            
-            Network network = Network.singleton;
-            int dvWidth = network.nodes.Count;
-            distanceVector =  new int[dvWidth, dvWidth];
-            
-        }
-
-        public void PrintDistanceVector() {
-            
-            int nodeCount = Network.singleton.nodes.Count;
-            Network network = Network.singleton;
-
-            string dvString = "Node: " + id + "\n";
-            
-            for (int x = -1; x < nodeCount; x++) {
-
-                if (x >= 0)
-                    dvString += x + "  "; //label Y-axis
-                else
-                    dvString += "   ";
-                
-                for (int y = 0; y < nodeCount; y++) {
-                    if (x < 0)
-                        dvString += y + " "; // label X-axis
-                    else if (distanceVector[x, y] != 0)
-                        dvString += distanceVector[x, y] + " ";
-                    else
-                        dvString += "- ";
-                    
-                }
-
-                dvString += "\n";
-            }
-            Debug.Log(dvString);
         }
         
     }

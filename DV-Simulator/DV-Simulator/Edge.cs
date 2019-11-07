@@ -15,8 +15,8 @@
         public override string ToString() {
             string str;
 
-            str = "a: " + a + '\n';
-            str += "b: " + b + '\n';
+            str = "a: " + a.id + '\n';
+            str += "b: " + b.id + '\n';
             str += "cost: " + cost + "\n\n";
             
             return str;

@@ -120,9 +120,12 @@ namespace DV_Simulator {
                 if (x == route.a.id && y == route.b.id) {
                     return route.cost;
                 }
+                if (x == route.b.id && y == route.a.id) {
+                    return route.cost;
+                }
             }
             Debug.Log("\n\nError: route from " + x + " to " + y + " was not found!!!\n\n");
-            return 99999;
+            return 0;
         }
         
     }
