@@ -5,18 +5,37 @@ using System.IO;
 namespace DV_Simulator {
     public class Simulator {
 
-        public void Run(string path) {
+        public static Simulator singleton { get; private set; }
 
+        private StreamWriter writer;
+        private string outputPath = "output.txt";
+        
+        public void Run(string inputPath) {
+
+            singleton = this;
+            
+            InitializeWriter();
+            
             Debug.active = true;
-            StreamReader reader = new StreamReader(path);
+            StreamReader reader = new StreamReader(inputPath);
             string topo = reader.ReadToEnd();
             string[] edges = topo.Split('\n');
             
             Network network = new Network(ParseTopology(edges));
-
-            
             
         }
+
+        private void InitializeWriter() {
+            if (File.Exists(outputPath))
+                File.WriteAllText(outputPath, "");
+            else
+                File.Create(outputPath);
+            
+            writer = new StreamWriter(outputPath);
+            writer.AutoFlush = true;
+            writer.WriteAsync("Clayton Stamper\nCS 4310 Project 1\n\n");
+        }
+        
 
         private List<Edge> ParseTopology(string[] rawEdges) {
             
@@ -34,6 +53,10 @@ namespace DV_Simulator {
 
             return network;
 
+        }
+
+        public void WriteToFile(string msg) {
+            writer.WriteLine(msg);
         }
         
     }

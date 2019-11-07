@@ -8,7 +8,9 @@ namespace DV_Simulator {
         public static void Log(string msg) {
             if (!active)
                 return;
+            
             Console.WriteLine(msg);
+            Simulator.singleton.WriteToFile(msg);
         }
     }
 }
