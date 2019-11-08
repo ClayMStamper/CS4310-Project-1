@@ -11,8 +11,10 @@ namespace DV_Simulator {
         private string outputPath = "output.txt";
         
         //setup io, read file in, construct network
-        public void Run(string inputPath) {
+        public void Run(string roundsRaw, string inputPath) {
 
+            int rounds = int.Parse(roundsRaw);
+            
             singleton = this;
             
             InitializeWriter();

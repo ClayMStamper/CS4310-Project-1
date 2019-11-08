@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DV_Simulator {
     public class DistanceVector {
@@ -8,7 +9,6 @@ namespace DV_Simulator {
         public int[,] table;
         public bool[,] converged;
         public int[] shortestPath;
-        public int[] newShortestPath;
 
         private Network network;
 
@@ -17,41 +17,41 @@ namespace DV_Simulator {
             this.source = source;
             this.table = table;
             int length = (int) Math.Sqrt(table.Length);
-            shortestPath = newShortestPath = new int[length];
+            shortestPath  = new int[length];
             converged = new bool[length, length];
             network = Network.singleton;
             
             foreach (int link in source.links) {
                 int cost = network.GetCost(source.id, link);
-                table[link, link] = newShortestPath[link] = cost;
+                table[link, link] = shortestPath[link] = cost;
             }
             
         }
 
         public void Update(DistanceVector dvPacket) {
 
-            int via = dvPacket.source.id;
+            /*int via = dvPacket.source.id;
             foreach (int link in dvPacket.source.links) {
                 int to = link;
-                table[via, to] = dvPacket.BestCost(to);
+                table[via, to] = dvPacket.shortestPath[to] + network.GetCost(source.id, link);
+            }*/
+
+            int length = network.nodes.Count;
+            int via = dvPacket.source.id;
+            
+            for (int to = 0; to < length; to++) {
+                int toCost = dvPacket.shortestPath[to];
+                if (toCost != 0) {
+                    int newCost = dvPacket.shortestPath[to] + network.GetCost(source.id, dvPacket.source.id);
+                    //add to shortestPath
+                    table[via, to] = newCost;
+                }
+                    
             }
             
         }
-
-       private int BestCost(int to) {
-
-           int best = int.MaxValue;
-           
-           for (int via = 0; via < Math.Sqrt(table.Length); via++) {
-               int cost = table[via, to];
-               if (cost != 0 && cost < best) //0 means no route
-                   best = cost;
-           }
-
-           return best == int.MaxValue ? 0 : best;
-
-       }
-
+        
+        
        public override string ToString() {
            
            int nodeCount = Network.singleton.nodes.Count;
