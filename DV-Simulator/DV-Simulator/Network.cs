@@ -23,8 +23,8 @@ namespace DV_Simulator {
 
             foreach (Node node in nodes)
                node.SetupDistanceVector();
-            foreach (Node node in nodes) 
-                Debug.Log(node.dv.ToString());
+            /*foreach (Node node in nodes) 
+                Debug.Log(node.dv.ToString());*/
             for (int i = 0; i < Simulator.singleton.rounds; i++) {
                 foreach (Node node in nodes) 
                     node.Flood();
