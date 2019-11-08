@@ -40,10 +40,6 @@ namespace DV_Simulator {
             int dvWidth = network.nodes.Count;
             dv =  new DistanceVector(this, new int[dvWidth, dvWidth]);
 
-            foreach (int link in links) {
-                dv.table[link, link] = network.GetCost(id, link);
-            }
-            
         }
 
         public void Flood() {

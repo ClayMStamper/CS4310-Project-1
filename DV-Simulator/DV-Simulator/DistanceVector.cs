@@ -6,36 +6,34 @@ namespace DV_Simulator {
         
         public Node source;
         public int[,] table;
+        public bool[,] converged;
         public int[] shortestPath;
         public int[] newShortestPath;
 
         private Network network;
 
         public DistanceVector(Node source, int[,] table) {
+            
             this.source = source;
             this.table = table;
-            shortestPath = new int[(int)Math.Sqrt(table.Length)];
+            int length = (int) Math.Sqrt(table.Length);
+            shortestPath = newShortestPath = new int[length];
+            converged = new bool[length, length];
             network = Network.singleton;
+            
+            foreach (int link in source.links) {
+                int cost = network.GetCost(source.id, link);
+                table[link, link] = newShortestPath[link] = cost;
+            }
+            
         }
 
         public void Update(DistanceVector dvPacket) {
 
-            int len = (int)Math.Sqrt(table.Length);
-            
-            for (int to = 0; to < len; to++) {
-                for (int via = 0; via < len; via++) {
-                    int mine = table[via, to];
-                    
-                    int costToThem = table[via, to] != 0 ? table[via, to] : network.GetCost(dvPacket.source.id, source.id);
-                    
-                    int theirBest = BestCost(to);
-                    int costToCheck = costToThem + theirBest;
-                    
-                    if (costToCheck != 0 && costToCheck < table[dvPacket.source.id, to] || table[dvPacket.source.id, to] != 0 ) {
-                        table[dvPacket.source.id, to] = theirBest;
-                    }
-                    
-                }
+            int via = dvPacket.source.id;
+            foreach (int link in dvPacket.source.links) {
+                int to = link;
+                table[via, to] = dvPacket.BestCost(to);
             }
             
         }
@@ -69,13 +67,15 @@ namespace DV_Simulator {
                    dvString += d;
                 
                for (int y = 0; y < nodeCount; y++) {
-                   if (x < 0)
+                   if (x >= 0 && (x == source.id || y == source.id))
+                       dvString += "x" + d; // mark off to myself and via myself
+                   else if (x < 0)
                        dvString += y + d; // label X-axis
                    else if (table[x, y] != 0)
                        dvString += table[x, y] + d;
                    else
-                       dvString += "-" + d;
-                    
+                       dvString += "-" + d; //unassigned values left blank
+
                }
 
                dvString += "\n";
