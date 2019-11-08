@@ -6,14 +6,15 @@ namespace DV_Simulator {
     public class Simulator {
 
         public static Simulator singleton { get; private set; }
-
+        public int rounds { get; private set; }
+        
         private StreamWriter writer;
         private string outputPath = "output.txt";
         
         //setup io, read file in, construct network
         public void Run(string roundsRaw, string inputPath) {
 
-            int rounds = int.Parse(roundsRaw);
+            rounds = int.Parse(roundsRaw);
             
             singleton = this;
             
