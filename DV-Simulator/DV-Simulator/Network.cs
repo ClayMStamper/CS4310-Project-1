@@ -8,51 +8,32 @@ namespace DV_Simulator {
     public class Network {
 
         public static Network singleton;
+        
         public List<Edge> routes { get; private set; }
         public List<Node> nodes { get; private set; }
+        
+        public bool converged;
+        public int roundsTaken;
+        public int lastNodeConverged;
+
+        private int rounds;
 
         //initialize nodes, initialize links, initialize routes, flood routing tables
-        public Network(List<Edge> routes) {
+        public Network(List<Edge> routes, int rounds) {
             
             this.routes = routes;
-            
+            this.rounds = rounds;
             singleton = this;
+            
             nodes = InitializeNodes();
             SetAllLinks();
             UpdateRoutes();
-
-            foreach (Node node in nodes)
-               node.SetupDistanceVector();
-            /*foreach (Node node in nodes) 
-                Debug.Log(node.dv.ToString());*/
-            for (int i = 0; i < Simulator.singleton.rounds; i++) {
-                foreach (Node node in nodes) 
-                    node.Flood();
-            }
-            foreach (Node node in nodes) 
-                Debug.Log(node.dv.ToString());
+            SetupDistanceVectors();
+            FloodRoutingTables();
+            PrintConvergence();
+            PrintRoutingTables();
             
-        }
-
-        public override string ToString() {
-
-            string str = "\nNetwork: \n";
-
-            str += "\n==============\n";
-            str += "Printing Nodes: \n";
-            foreach (Node node in nodes) {
-                str += node.ToString() + "\n";
-            }
             
-            str += "\n==============\n";
-            str += "Printing Edges: \n";
-            for (int i = 0; i < routes.Count; i++) {
-                str +=  "Edge " + i + ":\n" + routes[i];
-            }
-            str += "==============\n";
-
-            return str;
-
         }
 
         private void SetAllLinks() {
@@ -102,7 +83,42 @@ namespace DV_Simulator {
             return max + 1;
 
         }
-        
+        private void SetupDistanceVectors() {
+            
+            foreach (Node node in nodes)
+                node.SetupDistanceVector();
+        }
+
+        private void FloodRoutingTables() {
+            Debug.Log("Flooding for " + rounds + " rounds\n");
+            for (int i = 0; i < rounds; i++) {
+                
+                if (converged) {
+                    roundsTaken = i;
+                    return;
+                }
+                    
+                foreach (Node node in nodes) 
+                    node.Flood();
+                if (!converged)
+                    roundsTaken++;
+            }
+        }
+
+        private void PrintConvergence() {
+            if (converged) {
+                Debug.Log("Last node to converge was Node: " + lastNodeConverged);
+                Debug.Log("Last node converged after: " + roundsTaken + " rounds.\n");
+            } else {
+                Debug.Log("Nodes were unable to converge in: " + roundsTaken + " rounds...\n");
+            }
+        }
+
+        private void PrintRoutingTables() {
+            foreach (Node node in nodes)
+                Debug.Log(node.dv.ToString());
+        }
+
         public Node GetNode(int id) {
             foreach (Node node in nodes) {
                 if (node.id == id)
@@ -131,6 +147,27 @@ namespace DV_Simulator {
             }
             Debug.Log("\n\nError: route from " + x + " to " + y + " was not found!!!\n\n");
             return 0;
+        }
+        
+        public override string ToString() {
+
+            string str = "\nNetwork: \n";
+
+            str += "\n==============\n";
+            str += "Printing Nodes: \n";
+            foreach (Node node in nodes) {
+                str += node.ToString() + "\n";
+            }
+            
+            str += "\n==============\n";
+            str += "Printing Edges: \n";
+            for (int i = 0; i < routes.Count; i++) {
+                str +=  "Edge " + i + ":\n" + routes[i];
+            }
+            str += "==============\n";
+
+            return str;
+
         }
         
     }

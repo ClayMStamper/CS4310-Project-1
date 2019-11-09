@@ -9,7 +9,7 @@ namespace DV_Simulator {
         public int rounds { get; private set; }
         
         private StreamWriter writer;
-        private string outputPath = "output.txt";
+        private string outputPath = "../../../../output.txt";
         
         //setup io, read file in, construct network
         public void Run(string roundsRaw, string inputPath) {
@@ -25,7 +25,7 @@ namespace DV_Simulator {
             string topo = reader.ReadToEnd();
             string[] edges = topo.Split('\n');
             
-            Network network = new Network(ParseTopology(edges));
+            Network network = new Network(ParseTopology(edges), rounds);
             
         }
 
@@ -37,7 +37,7 @@ namespace DV_Simulator {
             
             writer = new StreamWriter(outputPath);
             writer.AutoFlush = true;
-            writer.WriteAsync("Clayton Stamper\nCS 4310 Project 1\n\n");
+            writer.Write("Clayton Stamper\nCS 4310 Project 1\n\n");
         }
         
 

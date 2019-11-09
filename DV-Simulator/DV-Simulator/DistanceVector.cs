@@ -11,7 +11,8 @@ namespace DV_Simulator {
         public int[] shortestPath;
 
         private Network network;
-
+        private int numberConverged;
+        
         public DistanceVector(Node source, int[,] table) {
             
             this.source = source;
@@ -44,13 +45,34 @@ namespace DV_Simulator {
                 if (toCost != 0) {
                     int newCost = dvPacket.shortestPath[to] + network.GetCost(source.id, dvPacket.source.id);
                     //add to shortestPath
-                    table[via, to] = newCost;
+                    if (table[via, to] == newCost) {
+                        numberConverged++;
+                        converged[via, to] = true;
+                    } else {
+                        numberConverged--;
+                        table[via, to] = newCost;
+                    }
                 }
-                    
+
+                if (AllAreConverged())
+                    network.converged = true;
             }
             
         }
-        
+
+
+        private bool AllAreConverged() {
+            int length = network.nodes.Count;
+            for (int i = 0; i < length; i++) {
+                for (int j = 0; j < length; j++) {
+                    if (!converged[i, j])
+                        return false;
+                }
+            }
+
+            network.converged = true;
+            return true;
+        }
         
        public override string ToString() {
            

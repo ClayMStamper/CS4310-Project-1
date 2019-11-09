@@ -4,7 +4,7 @@ namespace DV_Simulator {
     internal class Program {
         public static void Main(string[] args) {
             Simulator simulator = new Simulator();
-            simulator.Run("2", "../../../../" + args[1]);
+            simulator.Run(args[0], "../../../../" + args[1]);
         }
     }
 
